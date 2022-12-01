@@ -25,16 +25,20 @@ public class OrderController {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private OrderRepository orderRepository;
 
+    /**
+     * Submit an order to the database for the given username.
+     * @param username the username to submit order for to database.
+     * @return the submitted order for the user.
+     */
     @PostMapping("/submit/{username}")
     public ResponseEntity<UserOrder> submit(@PathVariable String username) {
         log.info("Start Order Submit for user {}", username);
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            log.warn("Order submission for user {} failed due to user not found.");
+            log.error("Order submission for user {} failed due to user not found.", username);
             return ResponseEntity.notFound()
                 .build();
         }
@@ -46,12 +50,17 @@ public class OrderController {
         return ResponseEntity.ok(order);
     }
 
+    /**
+     * Get all orders for the given username.
+     * @param username The username associated with the orders.
+     * @return List of Order objects for the given user (username).
+     */
     @GetMapping("/history/{username}")
     public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
         log.info("Start getOrdersForUser for user {}", username);
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            log.warn("Could not find any orders for user {}, user not found exception.", username);
+            log.error("Could not find any orders for user {}, user not found exception.", username);
             return ResponseEntity.notFound()
                 .build();
         }
