@@ -56,7 +56,7 @@ public class UserController {
         Optional<User> user = this.userRepository.findById(id);
 
         if (!user.isPresent()) {
-            log.info("No user found for the given id {}...");
+            log.error("Exception finding user: No user found for the given id {}...");
             return ResponseEntity.badRequest()
                 .build();
         }
@@ -96,6 +96,8 @@ public class UserController {
         user.setCart(cart);
 
         if (!isCreateUserRequestValid(createUserRequest)) {
+            log.error("Exception creating user {}: createUserRequest is invalid...", createUserRequest.getUsername());
+            log.error("Exception creating user {}, request: {}", createUserRequest.getUsername(), createUserRequest);
             return ResponseEntity.badRequest()
                 .build();
         }

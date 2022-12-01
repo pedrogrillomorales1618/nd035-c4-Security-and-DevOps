@@ -38,7 +38,7 @@ public class OrderController {
         log.info("Start Order Submit for user {}", username);
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            log.warn("Order submission for user {} failed due to user not found.");
+            log.error("Order submission for user {} failed due to user not found.", username);
             return ResponseEntity.notFound()
                 .build();
         }
@@ -60,7 +60,7 @@ public class OrderController {
         log.info("Start getOrdersForUser for user {}", username);
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            log.warn("Could not find any orders for user {}, user not found exception.", username);
+            log.error("Could not find any orders for user {}, user not found exception.", username);
             return ResponseEntity.notFound()
                 .build();
         }
